@@ -1,8 +1,19 @@
 import React from 'react';
 import { ViewProps } from 'react-native';
 
-import * as S from './styles';
 import { HighlightCard } from '../../components/HighlightCard';
+import {
+  TransactionCard,
+  TransactionCardProps,
+} from '../../components/TransactionCard';
+
+import { mockTransactions } from './mock';
+
+import * as S from './styles';
+
+export interface DataListProps extends TransactionCardProps {
+  id: string;
+}
 
 export function Dashboard({ ...props }: ViewProps) {
   return (
@@ -26,7 +37,7 @@ export function Dashboard({ ...props }: ViewProps) {
         </S.UserWrapper>
       </S.Header>
 
-      <S.HighlightCard>
+      <S.HighlightCards>
         <HighlightCard
           title='Entradas'
           amount='R$ 17.400,00'
@@ -45,7 +56,17 @@ export function Dashboard({ ...props }: ViewProps) {
           type='total'
           lastTransaction='01 à 16 de abril'
         />
-      </S.HighlightCard>
+      </S.HighlightCards>
+
+      <S.Transactions>
+        <S.Title>Listagem</S.Title>
+
+        <S.TransactionList
+          data={mockTransactions}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => <TransactionCard {...item} />}
+        />
+      </S.Transactions>
     </S.Container>
   );
 }
