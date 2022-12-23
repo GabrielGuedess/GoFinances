@@ -26,7 +26,26 @@ export function Dashboard({ ...props }: ViewProps) {
         </S.UserWrapper>
       </S.Header>
 
-      <HighlightCard />
+      <S.HighlightCard>
+        <HighlightCard
+          title='Entradas'
+          amount='R$ 17.400,00'
+          type='up'
+          lastTransaction='Última entrada dia 13 de abril'
+        />
+        <HighlightCard
+          title='Saídas'
+          amount='R$ 1.259,00'
+          type='down'
+          lastTransaction='Última saída dia 13 de abril'
+        />
+        <HighlightCard
+          title='Total'
+          amount='R$ 16.141,00'
+          type='total'
+          lastTransaction='01 à 16 de abril'
+        />
+      </S.HighlightCard>
     </S.Container>
   );
 }
