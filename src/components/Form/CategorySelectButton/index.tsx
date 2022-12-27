@@ -4,11 +4,12 @@ import * as S from './styles';
 
 interface CategorySelectProps {
   title: string;
+  onPress: () => void;
 }
 
-export function CategorySelect({ title }: CategorySelectProps) {
+export function CategorySelectButton({ title, onPress }: CategorySelectProps) {
   return (
-    <S.Container>
+    <S.Container onPress={onPress}>
       <S.Category>{title}</S.Category>
       <S.Icon name='chevron-down' />
     </S.Container>
