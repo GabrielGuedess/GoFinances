@@ -6,6 +6,7 @@ import { Button } from '../../components/Form/Button';
 import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton';
 
 import * as S from './styles';
+import { CategorySelect } from '../../components/Form/CategorySelect';
 
 export function Register({ ...props }: ViewProps) {
   const [transactionType, setTransactionType] = useState('');
@@ -35,6 +36,8 @@ export function Register({ ...props }: ViewProps) {
               onPress={() => setTransactionType('down')}
             />
           </S.TransactionTypes>
+
+          <CategorySelect title='Category' />
         </S.Fields>
 
         <Button title='Enviar' />
