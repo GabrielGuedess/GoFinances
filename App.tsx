@@ -10,7 +10,7 @@ import {
 
 import { ThemeProvider } from 'styled-components/native';
 
-import { Dashboard } from './src/screens/Dashboard';
+import { Register } from './src/screens/Register';
 
 import theme from './src/global/styles/theme';
 
@@ -49,7 +49,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Dashboard onLayout={onLayoutRootView} />
+      <Register onLayout={onLayoutRootView} />
     </ThemeProvider>
   );
 }
