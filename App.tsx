@@ -9,8 +9,9 @@ import {
 } from '@expo-google-fonts/poppins';
 
 import { ThemeProvider } from 'styled-components/native';
+import { NavigationContainer } from '@react-navigation/native';
 
-import { Register } from './src/screens/Register';
+import { AppRoutes } from './src/routes/app.routes';
 
 import theme from './src/global/styles/theme';
 
@@ -49,7 +50,9 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Register onLayout={onLayoutRootView} />
+      <NavigationContainer onReady={onLayoutRootView}>
+        <AppRoutes />
+      </NavigationContainer>
     </ThemeProvider>
   );
 }
