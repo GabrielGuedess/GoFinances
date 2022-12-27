@@ -1,3 +1,6 @@
+import 'intl';
+import 'intl/locale-data/jsonp/pt-BR';
+
 import React, { useCallback, useEffect, useState } from 'react';
 
 import * as SplashScreen from 'expo-splash-screen';

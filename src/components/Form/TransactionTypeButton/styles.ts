@@ -4,19 +4,19 @@ import { Feather } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 interface IconProps {
-  type: 'up' | 'down';
+  type: 'positive' | 'negative';
 }
 
 interface ContainerProps {
   isActive: boolean;
-  type: 'up' | 'down';
+  type: 'positive' | 'negative';
 }
 
 const containerModifiers = {
-  up: (theme: DefaultTheme) => css`
+  positive: (theme: DefaultTheme) => css`
     background: ${theme.colors.successLight};
   `,
-  down: (theme: DefaultTheme) => css`
+  negative: (theme: DefaultTheme) => css`
     background: ${theme.colors.attentionLight};
   `,
 };
@@ -39,7 +39,7 @@ export const Icon = styled(Feather)<IconProps>`
   ${({ theme, type }) => css`
     font-size: ${RFValue(24)}px;
     margin-right: 12px;
-    color: ${type === 'up'
+    color: ${type === 'positive'
       ? theme.colors.success
       : theme.colors.attentionLight};
   `}

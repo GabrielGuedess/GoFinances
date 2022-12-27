@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ViewProps } from 'react-native';
+
+import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { HighlightCard } from '../../components/HighlightCard';
 import {
   TransactionCard,
   TransactionCardProps,
 } from '../../components/TransactionCard';
-
-import { mockTransactions } from './mock';
 
 import * as S from './styles';
 
@@ -16,6 +17,51 @@ export interface DataListProps extends TransactionCardProps {
 }
 
 export function Dashboard({ ...props }: ViewProps) {
+  const [data, setData] = useState<DataListProps[]>([]);
+
+  async function loadTransaction() {
+    const dataKey = '@gofinances:transactions';
+    const response = await AsyncStorage.getItem(dataKey);
+
+    const transactions = response ? JSON.parse(response) : [];
+
+    const transactionsFormatted: DataListProps[] = transactions.map(
+      (item: DataListProps) => {
+        const amount = Number(item.amount).toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        });
+
+        const date = Intl.DateTimeFormat('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: '2-digit',
+        }).format(new Date(item.date));
+
+        return {
+          id: item.id,
+          name: item.name,
+          amount,
+          type: item.type,
+          category: item.category,
+          date,
+        };
+      }
+    );
+
+    setData(transactionsFormatted);
+  }
+
+  useEffect(() => {
+    loadTransaction();
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadTransaction();
+    }, [])
+  );
+
   return (
     <S.Container {...props}>
       <S.Header>
@@ -62,7 +108,7 @@ export function Dashboard({ ...props }: ViewProps) {
         <S.Title>Listagem</S.Title>
 
         <S.TransactionList
-          data={mockTransactions}
+          data={data}
           keyExtractor={item => item.id}
           renderItem={({ item }) => <TransactionCard {...item} />}
         />

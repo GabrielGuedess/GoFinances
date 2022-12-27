@@ -1,30 +1,29 @@
 import React from 'react';
 
-import * as S from './styles';
+import { categories } from '../../utils/categories';
 
-interface CategoryProps {
-  name: string;
-  icon: string;
-}
+import * as S from './styles';
 
 export interface TransactionCardProps {
   type: 'positive' | 'negative';
-  title: string;
+  name: string;
   amount: string;
-  category: CategoryProps;
+  category: string;
   date: string;
 }
 
 export function TransactionCard({
   type,
-  title,
+  name,
   amount,
   category,
   date,
 }: TransactionCardProps) {
+  const [categoryItem] = categories.filter(item => item.key === category);
+
   return (
     <S.Container>
-      <S.Title>{title}</S.Title>
+      <S.Title>{name}</S.Title>
       <S.Amount type={type}>
         {type === 'negative' && '- '}
         {amount}
@@ -32,8 +31,8 @@ export function TransactionCard({
 
       <S.Footer>
         <S.Category>
-          <S.Icon name={category.icon} />
-          <S.CategoryName>{category.name}</S.CategoryName>
+          <S.Icon name={categoryItem.icon} />
+          <S.CategoryName>{categoryItem.name}</S.CategoryName>
         </S.Category>
 
         <S.Date>{date}</S.Date>
