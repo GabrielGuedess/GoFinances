@@ -14,7 +14,6 @@ export const Container = styled.View<Pick<HistoryCardProps, 'color'>>`
     border-radius: 5px;
     border-left-width: 5px;
     border-left-color: ${color};
-
     margin-bottom: 8px;
   `}
 `;
