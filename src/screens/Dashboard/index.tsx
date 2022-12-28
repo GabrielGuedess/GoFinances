@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { ViewProps } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 
+import { useTheme } from 'styled-components';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -16,8 +17,24 @@ export interface DataListProps extends TransactionCardProps {
   id: string;
 }
 
-export function Dashboard({ ...props }: ViewProps) {
-  const [data, setData] = useState<DataListProps[]>([]);
+interface HighlightProps {
+  amount: string;
+}
+
+interface HighlightData {
+  entries: HighlightProps;
+  expensive: HighlightProps;
+  total: HighlightProps;
+}
+
+export function Dashboard() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [transactions, setTransactions] = useState<DataListProps[]>([]);
+  const [highlightData, setHighlightData] = useState<HighlightData>(
+    {} as HighlightData
+  );
+
+  const theme = useTheme();
 
   async function loadTransaction() {
     const dataKey = '@gofinances:transactions';
@@ -25,8 +42,17 @@ export function Dashboard({ ...props }: ViewProps) {
 
     const transactions = response ? JSON.parse(response) : [];
 
+    let entriesTotal = 0;
+    let expensiveTotal = 0;
+
     const transactionsFormatted: DataListProps[] = transactions.map(
       (item: DataListProps) => {
+        if (item.type === 'positive') {
+          entriesTotal += Number(item.amount);
+        } else {
+          expensiveTotal += Number(item.amount);
+        }
+
         const amount = Number(item.amount).toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
@@ -49,7 +75,32 @@ export function Dashboard({ ...props }: ViewProps) {
       }
     );
 
-    setData(transactionsFormatted);
+    setTransactions(transactionsFormatted);
+
+    const total = entriesTotal - expensiveTotal;
+
+    setHighlightData({
+      entries: {
+        amount: entriesTotal.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }),
+      },
+      expensive: {
+        amount: expensiveTotal.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }),
+      },
+      total: {
+        amount: total.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }),
+      },
+    });
+
+    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -63,56 +114,64 @@ export function Dashboard({ ...props }: ViewProps) {
   );
 
   return (
-    <S.Container {...props}>
-      <S.Header>
-        <S.UserWrapper>
-          <S.UserInfo>
-            <S.Photo
-              source={{
-                uri: 'https://avatars.githubusercontent.com/u/64827875?v=4',
-              }}
+    <S.Container>
+      {isLoading ? (
+        <S.LoadContainer>
+          <ActivityIndicator color={theme.colors.primary} size='large' />
+        </S.LoadContainer>
+      ) : (
+        <>
+          <S.Header>
+            <S.UserWrapper>
+              <S.UserInfo>
+                <S.Photo
+                  source={{
+                    uri: 'https://avatars.githubusercontent.com/u/64827875?v=4',
+                  }}
+                />
+
+                <S.User>
+                  <S.UserGreeting>Olá, </S.UserGreeting>
+                  <S.UserName>Gabriel</S.UserName>
+                </S.User>
+              </S.UserInfo>
+
+              <S.Icon name='power' />
+            </S.UserWrapper>
+          </S.Header>
+
+          <S.HighlightCards>
+            <HighlightCard
+              title='Entradas'
+              amount={highlightData.entries.amount}
+              type='up'
+              lastTransaction='Última entrada dia 13 de abril'
             />
+            <HighlightCard
+              title='Saídas'
+              amount={highlightData.expensive.amount}
+              type='down'
+              lastTransaction='Última saída dia 13 de abril'
+            />
+            <HighlightCard
+              title='Total'
+              amount={highlightData.total.amount}
+              type='total'
+              lastTransaction='01 à 16 de abril'
+            />
+          </S.HighlightCards>
 
-            <S.User>
-              <S.UserGreeting>Olá, </S.UserGreeting>
-              <S.UserName>Gabriel</S.UserName>
-            </S.User>
-          </S.UserInfo>
+          <S.Transactions>
+            <S.Title>Listagem</S.Title>
 
-          <S.Icon name='power' />
-        </S.UserWrapper>
-      </S.Header>
-
-      <S.HighlightCards>
-        <HighlightCard
-          title='Entradas'
-          amount='R$ 17.400,00'
-          type='up'
-          lastTransaction='Última entrada dia 13 de abril'
-        />
-        <HighlightCard
-          title='Saídas'
-          amount='R$ 1.259,00'
-          type='down'
-          lastTransaction='Última saída dia 13 de abril'
-        />
-        <HighlightCard
-          title='Total'
-          amount='R$ 16.141,00'
-          type='total'
-          lastTransaction='01 à 16 de abril'
-        />
-      </S.HighlightCards>
-
-      <S.Transactions>
-        <S.Title>Listagem</S.Title>
-
-        <S.TransactionList
-          data={data}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => <TransactionCard {...item} />}
-        />
-      </S.Transactions>
+            <S.TransactionList
+              data={transactions}
+              keyExtractor={item => item.id}
+              renderItem={({ item }) => <TransactionCard {...item} />}
+            />
+          </S.Transactions>
+        </>
+      )}
     </S.Container>
   );
 }
