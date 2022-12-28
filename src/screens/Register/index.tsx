@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Modal,
-  ViewProps,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Alert,
-} from 'react-native';
+import { Modal, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 
 import { useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
@@ -36,7 +30,7 @@ const schema = Yup.object().shape({
     .required('Preço é obrigatório'),
 });
 
-export function Register({ ...props }: ViewProps) {
+export function Register() {
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
@@ -97,7 +91,7 @@ export function Register({ ...props }: ViewProps) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <S.Container {...props}>
+      <S.Container>
         <S.Header>
           <S.Title>Cadastro</S.Title>
         </S.Header>
