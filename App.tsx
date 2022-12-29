@@ -12,10 +12,9 @@ import {
 } from '@expo-google-fonts/poppins';
 
 import { ThemeProvider } from 'styled-components/native';
-import { NavigationContainer } from '@react-navigation/native';
+import { AuthProvider } from './src/hooks/auth';
 
-import { AppRoutes } from './src/routes/app.routes';
-import { SignIn } from './src/screens/SignIn';
+import { Routes } from './src/routes';
 
 import theme from './src/global/styles/theme';
 
@@ -54,10 +53,9 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <NavigationContainer onReady={onLayoutRootView}>
-        {/* <AppRoutes /> */}
-        <SignIn />
-      </NavigationContainer>
+      <AuthProvider>
+        <Routes onReady={onLayoutRootView} />
+      </AuthProvider>
     </ThemeProvider>
   );
 }
