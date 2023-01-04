@@ -1,16 +1,32 @@
 {
   "expo": {
-    "name": "gofinances",
+    "name": "GoFinances",
     "slug": "gofinances",
+    "icon": "./assets/logo.png",
     "version": "1.0.0",
     "scheme": "gofinances",
-    "plugins": ["expo-apple-authentication"],
-    "assetBundlePatterns": ["**/*"],
+    "plugins": [
+      "expo-apple-authentication"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "android": {
-      "package": "com.gofinances"
+      "package": "com.gofinances",
+      "versionCode": 1
     },
     "ios": {
-      "bundleIdentifier": "com.gofinances"
+      "bundleIdentifier": "com.gofinances",
+      "buildNumber": "1.0.0"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5e286e9f-66f7-4ceb-b76e-58177d57f589"
+      }
+    },
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/5e286e9f-66f7-4ceb-b76e-58177d57f589"
     }
   }
 }

@@ -8,9 +8,9 @@
     <true/>
     <key>EXUpdatesLaunchWaitMs</key>
     <integer>0</integer>
-    <key>EXUpdatesSDKVersion</key>
-    <string>47.0.0</string>
     <key>EXUpdatesURL</key>
-    <string>https://exp.host/@gabrielguedess/gofinances</string>
+    <string>https://u.expo.dev/5e286e9f-66f7-4ceb-b76e-58177d57f589</string>
+    <key>EXUpdatesRuntimeVersion</key>
+    <string>1.0.0</string>
   </dict>
 </plist>
