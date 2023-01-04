@@ -12,11 +12,11 @@ interface RoutesProps {
 }
 
 export function Routes({ onReady }: RoutesProps) {
-  const { user, isLoading } = useAuth();
+  const { user } = useAuth();
 
   return (
     <NavigationContainer onReady={onReady}>
-      {!isLoading && (user.id ? <AppRoutes /> : <AuthRoutes />)}
+      {user.id ? <AppRoutes /> : <AuthRoutes />}
     </NavigationContainer>
   );
 }
